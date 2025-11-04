@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Generate BL</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .mandatory::after { content: " *"; color: red; }
+  </style>
+</head>
+<body class="bg-light">
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="text-primary">Generate Bill of Lading (BL)</h3>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary btn-sm">Back</a>
+  </div>
+
+  <form method="POST">
+    <div class="row g-2 mb-2">
+      <div class="col-md-6"><label class="mandatory">Shipper</label><input type="text" name="shipper" class="form-control" value="{{ prefill.shipper }}" required></div>
+      <div class="col-md-6"><label class="mandatory">Consignee</label><input type="text" name="consignee" class="form-control" value="{{ prefill.consignee }}" required></div>
+    </div>
+
+    <div class="row g-2 mb-2">
+      <div class="col-md-4"><label class="mandatory">Notify Party</label><input type="text" name="notify" class="form-control" required></div>
+      <div class="col-md-4"><label class="mandatory">POO</label><input type="text" name="poo" class="form-control" required></div>
+      <div class="col-md-4"><label class="mandatory">POL</label><input type="text" name="pol" class="form-control" required></div>
+    </div>
+
+    <div class="row g-2 mb-2">
+      <div class="col-md-3"><label class="mandatory">Freight Payable</label><input type="text" name="freight" class="form-control" required></div>
+      <div class="col-md-3"><label>Vessel</label><input name="vessel" class="form-control" value="{{ prefill.vessel }}"></div>
+      <div class="col-md-3"><label>Voyage</label><input name="voyage" class="form-control" value="{{ prefill.voyage }}"></div>
+      <div class="col-md-3"><label class="mandatory">POD</label><input type="text" name="pod" class="form-control" required></div>
+    </div>
+
+    <div class="row g-2 mb-2">
+      <div class="col-md-3"><label class="mandatory">FPOD</label><input type="text" name="fpod" class="form-control" required></div>
+      <div class="col-md-3"><label>Container No</label><input name="container_no" class="form-control" value="{{ prefill.container_no }}"></div>
+      <div class="col-md-3"><label>Total Packages</label><input name="total_packages" class="form-control" value="{{ prefill.packages }}"></div>
+      <div class="col-md-3"><label class="mandatory">Shipment type</label><input type="text" name="shipment_type" class="form-control" required></div>
+    </div>
+
+    <div class="row g-2 mb-2">
+      <div class="col-md-4">
+        <label>Container Size Type</label>
+        <select name="container_size" class="form-select">
+          {% for size in container_mapping.keys() %}
+            <option value="{{size}}" {% if prefill.container_size==size %}selected{% endif %}>{{size}} - {{container_mapping[size]}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4"><label>A/SEAL No</label><input name="aseal" class="form-control"></div>
+      <div class="col-md-4"><label>C/SEAL No</label><input name="cseal" class="form-control"></div>
+    </div>
+
+    <div class="row g-2 mb-2">
+      <div class="col-md-3"><label class="mandatory">CBM</label><input type="text" name="cbm" class="form-control" value="{{ prefill.cbm }}" required></div>
+      <div class="col-md-3"><label class="mandatory">Gross Weight</label><input name="gross_weight" class="form-control" value="{{ prefill.gross_weight }}" required></div>
+      <div class="col-md-16"><label>Packages / Description</label><textarea name="packages" rows="3" class="form-control">{{ prefill.packages }}</textarea></div>
+    </div>
+
+    <div class="row g-2 mb-3">
+      <div class="col-md-3"><label>Date</label><input type="date" name="date" class="form-control"></div>
+    </div>
+
+    <div class="text-end">
+      <button name="action" value="preview" class="btn btn-outline-primary">Preview BL</button>
+      <button name="action" value="download" class="btn btn-success">Download BL</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>
